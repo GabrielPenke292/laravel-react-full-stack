@@ -1,8 +1,13 @@
 import React from 'react'
+import { Outlet } from 'react-router-dom'
 
+// Outlet is the place where the child will be rendered
 const GuestLayout = () => {
   return (
-    <div>GuestLayout</div>
+    <div>
+        <Outlet />
+
+    </div>
   )
 }
 
