@@ -1,20 +1,19 @@
-import React from 'react'
-import { Navigate, Outlet } from 'react-router-dom'
-import { useStateContext } from '../views/ContextProvider'
+import React from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import { useStateContext } from "../contexts/ContextProvider";
 
 // Outlet is the place where the child will be rendered
 const GuestLayout = () => {
-  const {token} = useStateContext();
+    const { token } = useStateContext();
 
-  if(token){
-    return <Navigate to="/users" />
-  }
-  return (
-    <div>
-        <Outlet />
+    if (token) {
+        return <Navigate to="/users" />;
+    }
+    return (
+        <div>
+            <Outlet />
+        </div>
+    );
+};
 
-    </div>
-  )
-}
-
-export default GuestLayout
+export default GuestLayout;
