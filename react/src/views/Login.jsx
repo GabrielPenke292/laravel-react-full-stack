@@ -5,6 +5,7 @@ export default () => {
     return (
         <div className="login-signup-form animated fadeInDown">
             <div className="form">
+                <h1 className="title">Login into your accout</h1>
                 <form action="" onSubmit={onSubmit}>
                     <input type="email" placeholder="Email" />
                     <input type="password" placeholder="Password" />
