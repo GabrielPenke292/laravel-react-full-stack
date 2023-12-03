@@ -14,9 +14,9 @@ const Signup = () => {
         e.preventDefault();
         const payload = {
             name: nameRef.current.value,
-            email: nameRef.current.value,
-            password: nameRef.current.value,
-            password_Confirmation: nameRef.current.value,
+            email: emailRef.current.value,
+            password: passwordRef.current.value,
+            password_Confirmation: passwordConfirmationRef.current.value,
         };
 
         axiosClient
