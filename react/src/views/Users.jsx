@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axiosClient from "../axios-client";
 
 const Users = () => {
     const [users, setUsers] = useState([]);
