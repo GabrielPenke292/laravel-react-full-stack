@@ -15,6 +15,7 @@ export default () => {
             password: passwordRef.current.value,
         };
 
+        setErrors({});
         axiosClient
             .post("/login", payload)
             .then(({ data }) => {
@@ -24,7 +25,13 @@ export default () => {
             .catch((err) => {
                 const response = err.response;
                 if (response && response.status === 422) {
-                    setErrors(response.data.errors);
+                    if (response.data.errors) {
+                        setErrors(response.data.errors);
+                    } else {
+                        setErrors({
+                            email: [response.data.message],
+                        });
+                    }
                 }
             });
     };
