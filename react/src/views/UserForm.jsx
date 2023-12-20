@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Form, useParams } from "react-router-dom";
 import axiosClient from "../axios-client";
 
 const UserForm = () => {
     const { id } = useParams();
     const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState(null);
     const [user, setUser] = useState({
         id: null,
         name: "",
@@ -20,7 +21,7 @@ const UserForm = () => {
                 .get(`/users/${id}`)
                 .then(({ data }) => {
                     setLoading(false);
-                    setUser(data);
+                    setUser(data.data);
                 })
                 .catch(() => {
                     setLoading(false);
@@ -28,7 +29,67 @@ const UserForm = () => {
         }, []);
     }
 
-    return <>UserForm</>;
+    const onSubmit = (e) => {
+        e.preventDefault();
+    };
+
+    return (
+        <>
+            {user.id && <h1>Update User: {user.name}</h1>}
+            {!user.id && <h1>New User</h1>}
+
+            <div className="card animated fadeInDown">
+                {loading && <div className="text-center">Loading...</div>}
+
+                {errors && (
+                    <div className="alert alert-danger">
+                        {Object.keys(errors).map((key) => (
+                            <p key={key}>{errors[key][0]}</p>
+                        ))}
+                    </div>
+                )}
+
+                {!loading && (
+                    <form onSubmit="onSubmit">
+                        <input
+                            value={user.name}
+                            onChange={(ev) =>
+                                setUser({ ...user, name: ev.target.value })
+                            }
+                            type="text"
+                            placeholder="name"
+                        />
+                        <input
+                            value={user.email}
+                            onChange={(ev) =>
+                                setUser({ ...user, email: ev.target.value })
+                            }
+                            type="email"
+                            placeholder="Email"
+                        />
+                        <input
+                            onChange={(ev) =>
+                                setUser({ ...user, password: ev.target.value })
+                            }
+                            type="password"
+                            placeholder="Password"
+                        />
+                        <input
+                            onChange={(ev) =>
+                                setUser({
+                                    ...user,
+                                    password_confirmation: ev.target.value,
+                                })
+                            }
+                            type="password"
+                            placeholder="Password Confirmation"
+                        />
+                        <button className="btn">Save</button>
+                    </form>
+                )}
+            </div>
+        </>
+    );
 };
 
 export default UserForm;
