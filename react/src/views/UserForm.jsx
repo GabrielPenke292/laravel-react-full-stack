@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Form, useParams } from "react-router-dom";
+import { Form, useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../axios-client";
 
 const UserForm = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState(null);
     const [user, setUser] = useState({
@@ -31,6 +32,31 @@ const UserForm = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        if (user.id) {
+            axiosClient
+                .put(`/users/${user.id}`, user)
+                .then(() => {
+                    navigate("/users");
+                })
+                .catch((err) => {
+                    const response = err.response;
+                    if (response && response.status === 422) {
+                        setErrors(response.data.errors);
+                    }
+                });
+        } else {
+            axiosClient
+                .post(`/users`, user)
+                .then(() => {
+                    navigate("/users");
+                })
+                .catch((err) => {
+                    const response = err.response;
+                    if (response && response.status === 422) {
+                        setErrors(response.data.errors);
+                    }
+                });
+        }
     };
 
     return (
@@ -50,7 +76,7 @@ const UserForm = () => {
                 )}
 
                 {!loading && (
-                    <form onSubmit="onSubmit">
+                    <form onSubmit={onSubmit}>
                         <input
                             value={user.name}
                             onChange={(ev) =>
