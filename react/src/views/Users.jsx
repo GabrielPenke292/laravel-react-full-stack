@@ -24,6 +24,15 @@ const Users = () => {
             });
     };
 
+    const onDelete = (user) => {
+        if (!window.confirm(`Are you sure you want to delete ${user.name}?`)) {
+            return;
+        }
+        axiosClient.delete(`/users/${user.id}`).then(() => {
+            getUsers();
+        });
+    };
+
     return (
         <div>
             <div
@@ -64,7 +73,10 @@ const Users = () => {
                                         Edit
                                     </Link>
                                     &nbsp;
-                                    <button className="btn-delete">
+                                    <button
+                                        onClick={(ev) => onDelete(u)}
+                                        className="btn-delete"
+                                    >
                                         Delete
                                     </button>
                                 </td>
